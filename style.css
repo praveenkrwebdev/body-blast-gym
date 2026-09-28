@@ -2253,6 +2253,9 @@ h2 span {
 
     transition: var(--transition);
 }
+   .whatsapp svg {
+    width: 20px;
+}
 
 
 .whatsapp strong {
