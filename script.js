@@ -1,133 +1,254 @@
 /* =========================================================
    BODY BLAST GYM KOTLA
-   Main JavaScript
-   ========================================================= */
+   Complete JavaScript
+========================================================= */
 
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* ================= NAVBAR ================= */
 
-    const navbar = document.getElementById("navbar");
+    /* =====================================================
+       NAVBAR SCROLL EFFECT
+    ====================================================== */
+
+    const navbar =
+        document.getElementById("navbar");
+
 
     const handleScroll = () => {
 
         if (window.scrollY > 40) {
+
             navbar.classList.add("scrolled");
+
         } else {
+
             navbar.classList.remove("scrolled");
+
         }
 
     };
 
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener(
+        "scroll",
+        handleScroll
+    );
+
 
     handleScroll();
 
 
-    /* ================= MOBILE MENU ================= */
 
-    const menuToggle = document.getElementById("menuToggle");
-    const navMenu = document.getElementById("navMenu");
+    /* =====================================================
+       MOBILE MENU
+    ====================================================== */
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+    const navMenu =
+        document.getElementById("navMenu");
+
 
     if (menuToggle && navMenu) {
 
-        menuToggle.addEventListener("click", () => {
 
-            navMenu.classList.toggle("active");
+        menuToggle.addEventListener(
+            "click",
+            () => {
 
-            const expanded =
-                navMenu.classList.contains("active");
+                navMenu.classList.toggle(
+                    "active"
+                );
 
-            menuToggle.setAttribute(
-                "aria-expanded",
-                expanded
+
+                const isOpen =
+                    navMenu.classList.contains(
+                        "active"
+                    );
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    isOpen
+                );
+
+            }
+        );
+
+
+        /* Close mobile menu after clicking */
+
+        const navLinks =
+            navMenu.querySelectorAll("a");
+
+
+        navLinks.forEach((link) => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    navMenu.classList.remove(
+                        "active"
+                    );
+
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
             );
 
         });
 
-
-        /* Close menu after clicking a link */
-
-        const navLinks = navMenu.querySelectorAll("a");
-
-        navLinks.forEach((link) => {
-
-            link.addEventListener("click", () => {
-                navMenu.classList.remove("active");
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-            });
-
-        });
-
     }
 
 
-    /* ================= CURRENT YEAR ================= */
 
-    const year = document.getElementById("year");
+    /* =====================================================
+       CURRENT YEAR
+    ====================================================== */
+
+    const year =
+        document.getElementById("year");
+
 
     if (year) {
-        year.textContent = new Date().getFullYear();
+
+        year.textContent =
+            new Date().getFullYear();
+
     }
 
 
-    /* ================= REVEAL ANIMATION ================= */
 
-    const revealElements = document.querySelectorAll(
-        ".service-card, .about-card, .review-card, .facility-item"
-    );
+    /* =====================================================
+       SCROLL REVEAL
+    ====================================================== */
 
-    const observer = new IntersectionObserver(
-        (entries) => {
+    const revealElements =
+        document.querySelectorAll(
+            ".service-card, " +
+            ".about-card, " +
+            ".review-card, " +
+            ".facility-item, " +
+            ".journey-item"
+        );
 
-            entries.forEach((entry) => {
 
-                if (entry.isIntersecting) {
+    if ("IntersectionObserver" in window) {
 
-                    entry.target.classList.add("visible");
 
-                    observer.unobserve(entry.target);
+        const observer =
+            new IntersectionObserver(
+                (entries) => {
 
+                    entries.forEach(
+                        (entry) => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target
+                                    .classList
+                                    .add(
+                                        "visible"
+                                    );
+
+
+                                observer.unobserve(
+                                    entry.target
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.12
                 }
-
-            });
-
-        },
-        {
-            threshold: 0.12
-        }
-    );
+            );
 
 
-    revealElements.forEach((element) => {
-        observer.observe(element);
-    });
+        revealElements.forEach(
+            (element) => {
+
+                observer.observe(element);
+
+            }
+        );
 
 
-    /* ================= SMOOTH ANCHOR ================= */
+    } else {
 
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        revealElements.forEach(
+            (element) => {
 
-        link.addEventListener("click", (event) => {
+                element.classList.add(
+                    "visible"
+                );
 
-            const targetId =
-                link.getAttribute("href");
+            }
+        );
 
-            if (
-                targetId &&
-                targetId !== "#"
-            ) {
+    }
 
-                const target =
-                    document.querySelector(targetId);
 
-                if (target) {
+
+    /* =====================================================
+       SMOOTH ANCHOR LINKS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            'a[href^="#"]'
+        )
+        .forEach((link) => {
+
+
+            link.addEventListener(
+                "click",
+                (event) => {
+
+
+                    const targetId =
+                        link.getAttribute(
+                            "href"
+                        );
+
+
+                    if (
+                        !targetId ||
+                        targetId === "#"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const target =
+                        document.querySelector(
+                            targetId
+                        );
+
+
+                    if (!target) {
+
+                        return;
+
+                    }
+
 
                     event.preventDefault();
+
 
                     target.scrollIntoView({
                         behavior: "smooth",
@@ -135,11 +256,42 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                 }
-
-            }
+            );
 
         });
 
-    });
+
+
+    /* =====================================================
+       ESCAPE KEY CLOSES MOBILE MENU
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape" &&
+                navMenu
+            ) {
+
+                navMenu.classList.remove(
+                    "active"
+                );
+
+
+                if (menuToggle) {
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+            }
+
+        }
+    );
 
 });
