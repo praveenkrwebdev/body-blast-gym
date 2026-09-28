@@ -2738,6 +2738,9 @@ h2 span {
 
         padding: 0;
     }
+   .whatsapp svg {
+    width: 20px;
+}
 
 
     .whatsapp span {
